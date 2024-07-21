@@ -15,8 +15,42 @@ class NpEncoder(json.JSONEncoder):
 ipl_matches = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRy2DUdUbaKx_Co9F0FSnIlyS-8kp4aKv_I0-qzNeghiZHAI_hw94gKG22XTxNJHMFnFVKsO4xWOdIs/pub?gid=1655759976&single=true&output=csv"
 matches = pd.read_csv(ipl_matches)
 
+matches.replace({
+    'Team1': {
+        'Kings XI Punjab': 'Punjab Kings',
+        'Rising Pune Supergiant': 'Rising Pune Supergiants',
+        'Delhi Daredevils': 'Delhi Capitals'
+    },
+    'Team2': {
+        'Kings XI Punjab': 'Punjab Kings',
+        'Rising Pune Supergiant': 'Rising Pune Supergiants',
+        'Delhi Daredevils': 'Delhi Capitals'
+    }
+}, inplace=True)
+
+print(matches['Team1'].unique())
+
+matches = matches[~matches['Team1'].isin(['Kochi Tuskers Kerala']) & ~matches['Team2'].isin(['Kochi Tuskers Kerala'])]
+
+
 ipl_ball = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRu6cb6Pj8C9elJc5ubswjVTObommsITlNsFy5X0EiBY7S-lsHEUqx3g_M16r50Ytjc0XQCdGDyzE_Y/pub?output=csv"
 balls = pd.read_csv(ipl_ball)
+
+
+
+balls.replace({
+    'BattingTeam': {
+        'Kings XI Punjab': 'Punjab Kings',
+        'Rising Pune Supergiant': 'Rising Pune Supergiants',
+        'Delhi Daredevils': 'Delhi Capitals'
+    },
+
+}, inplace=True)
+
+print(balls['BattingTeam'].unique())
+
+balls = balls[~balls['BattingTeam'].isin(['Kochi Tuskers Kerala']) & ~balls['BattingTeam'].isin(['Kochi Tuskers Kerala'])]
+
 
 ball_withmatch = balls.merge(matches, on='ID', how='inner').copy()
 ball_withmatch['BowlingTeam'] = ball_withmatch.Team1 + ball_withmatch.Team2
