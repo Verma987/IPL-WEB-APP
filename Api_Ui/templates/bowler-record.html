@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bowler Record</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #333;
+            background: url('https://images.unsplash.com/photo-1518343655475-b41b8b0f1b09?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNzEyOXwwfDF8c2VhcmNofDJ8fGJhc2tldGJhbGxfYmFja3JvdW5kfGVufDB8fDE2NTg2NzQ0&ixlib=rb-1.2.1&q=80&w=1920') no-repeat center center fixed;
+            background-size: cover;
+        }
+        h1 {
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            margin: 0;
+            background: rgba(0, 0, 0, 0.5);
+            border-bottom: 4px solid #ffcc00;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.8);
+            margin: 40px auto;
+            padding: 20px;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #333;
+            color: #ffcc00;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Bowler Record</h1>
+
+<div class="container">
+    <form action="/bowler-record" method="get">
+        <label>Enter Bowler Name</label>
+        <input type="text" name="bowler" placeholder="Bowler Name" required><br><br>
+        <input type="submit" value="Get Record">
+    </form>
+
+    {% if result %}
+        {% set bowler = result|first %}
+        <h2>Overall Record for {{ bowler }}</h2>
+        <table>
+            <tr>
+                <th>Stat</th>
+                <th>Value</th>
+            </tr>
+            <tr><td>Innings</td><td>{{ result[bowler]['all']['innings'] }}</td></tr>
+            <tr><td>Wickets</td><td>{{ result[bowler]['all']['wicket'] }}</td></tr>
+            <tr><td>Economy</td><td>{{ result[bowler]['all']['economy'] }}</td></tr>
+            <tr><td>Average</td><td>{{ result[bowler]['all']['average'] }}</td></tr>
+            <tr><td>Strike Rate</td><td>{{ result[bowler]['all']['strikeRate'] }}</td></tr>
+            <tr><td>Fours</td><td>{{ result[bowler]['all']['fours'] }}</td></tr>
+            <tr><td>Sixes</td><td>{{ result[bowler]['all']['sixes'] }}</td></tr>
+            <tr><td>Best Figure</td><td>{{ result[bowler]['all']['best_figure'] }}</td></tr>
+            <tr><td>3+ Wicket Hauls</td><td>{{ result[bowler]['all']['3+W'] }}</td></tr>
+            <tr><td>Man of the Match</td><td>{{ result[bowler]['all']['mom'] }}</td></tr>
+        </table>
+
+        <h2>Record Against Teams</h2>
+        <table>
+            <tr>
+                <th>Team</th>
+                <th>Innings</th>
+                <th>Wickets</th>
+                <th>Economy</th>
+                <th>Average</th>
+                <th>Strike Rate</th>
+                <th>Fours</th>
+                <th>Sixes</th>
+                <th>Best Figure</th>
+                <th>3+ Wicket Hauls</th>
+                <th>Man of the Match</th>
+            </tr>
+            {% for team, stats in result[bowler]['against'].items() %}
+                <tr>
+                    <td>{{ team }}</td>
+                    <td>{{ stats['innings'] }}</td>
+                    <td>{{ stats['wicket'] }}</td>
+                    <td>{{ stats['economy'] }}</td>
+                    <td>{{ stats['average'] }}</td>
+                    <td>{{ stats['strikeRate'] }}</td>
+                    <td>{{ stats['fours'] }}</td>
+                    <td>{{ stats['sixes'] }}</td>
+                    <td>{{ stats['best_figure'] }}</td>
+                    <td>{{ stats['3+W'] }}</td>
+                    <td>{{ stats['mom'] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</div>
+
+</body>
+</html>
