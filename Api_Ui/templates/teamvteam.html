@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Team Vs Team</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #333;
+            background: url('https://images.unsplash.com/photo-1518343655475-b41b8b0f1b09?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNzEyOXwwfDF8c2VhcmNofDJ8fGJhc2tldGJhbGxfYmFja3JvdW5kfGVufDB8fDE2NTg2NzQ0&ixlib=rb-1.2.1&q=80&w=1920') no-repeat center center fixed;
+            background-size: cover;
+        }
+        h1 {
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            margin: 0;
+            background: rgba(0, 0, 0, 0.5);
+            border-bottom: 4px solid #ffcc00;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.8);
+            margin: 40px auto;
+            padding: 20px;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+        select {
+            padding: 8px;
+            width: 100%;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        p {
+            font-size: 1.2em;
+            color: #333;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Team Vs Team</h1>
+
+<div class="container">
+    <form action="/teamvteam" method="get">
+        <label>Select Team 1</label>
+        <select name="team1" required>
+            <option value="" disabled selected>Select Team 1</option>
+            {% for item in teams %}
+                <option value="{{ item }}">{{ item }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Select Team 2</label>
+        <select name="team2" required>
+            <option value="" disabled selected>Select Team 2</option>
+            {% for item in teams %}
+                <option value="{{ item }}">{{ item }}</option>
+            {% endfor %}
+        </select>
+
+        <input type="submit" value="Find Track Record">
+    </form>
+
+    {% if result %}
+        {% for i in result %}
+            <p>{{ i }} : {{ result[i] }}</p>
+        {% endfor %}
+    {% endif %}
+</div>
+
+</body>
+</html>
