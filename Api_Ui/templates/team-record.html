@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Team Record</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #333;
+            background: url('https://images.unsplash.com/photo-1518343655475-b41b8b0f1b09?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNzEyOXwwfDF8c2VhcmNofDJ8fGJhc2tldGJhbGxfYmFja3JvdW5kfGVufDB8fDE2NTg2NzQ0&ixlib=rb-1.2.1&q=80&w=1920') no-repeat center center fixed;
+            background-size: cover;
+        }
+        h1 {
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            margin: 0;
+            background: rgba(0, 0, 0, 0.5);
+            border-bottom: 4px solid #ffcc00;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.8);
+            margin: 40px auto;
+            padding: 20px;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #333;
+            color: #ffcc00;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Team Record</h1>
+
+<div class="container">
+    <form action="/team-record" method="get">
+        <label>Select Team</label>
+        <select name="team1" required>
+            {% for team in teams %}
+                <option value="{{ team }}">{{ team }}</option>
+            {% endfor %}
+        </select><br><br>
+        <input type="submit" value="Get Record">
+    </form>
+
+    {% if result %}
+        {% set team = result|first %}
+        <h2>Overall Record for {{ team }}</h2>
+        <table>
+            <tr>
+                <th>Stat</th>
+                <th>Value</th>
+            </tr>
+            <tr><td>Matches Played</td><td>{{ result[team]['overall']['matchesplayed'] }}</td></tr>
+            <tr><td>Won</td><td>{{ result[team]['overall']['won'] }}</td></tr>
+            <tr><td>Lost</td><td>{{ result[team]['overall']['loss'] }}</td></tr>
+            <tr><td>No Result</td><td>{{ result[team]['overall']['noResult'] }}</td></tr>
+            <tr><td>Titles</td><td>{{ result[team]['overall']['title'] }}</td></tr>
+        </table>
+
+        <h2>Record Against Teams</h2>
+        <table>
+            <tr>
+                <th>Team</th>
+                <th>Matches Played</th>
+                <th>Won</th>
+                <th>Lost</th>
+                <th>No Result</th>
+            </tr>
+            {% for opponent, stats in result[team]['against'].items() %}
+                <tr>
+                    <td>{{ opponent }}</td>
+                    <td>{{ stats['matchesplayed'] }}</td>
+                    <td>{{ stats['won'] }}</td>
+                    <td>{{ stats['loss'] }}</td>
+                    <td>{{ stats['noResult'] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</div>
+
+</body>
+</html>
