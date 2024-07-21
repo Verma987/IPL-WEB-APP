@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Batsman Record</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            color: #333;
+            background: url('https://images.unsplash.com/photo-1518343655475-b41b8b0f1b09?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwzNzEyOXwwfDF8c2VhcmNofDJ8fGJhc2tldGJhbGxfYmFja3JvdW5kfGVufDB8fDE2NTg2NzQ0&ixlib=rb-1.2.1&q=80&w=1920') no-repeat center center fixed;
+            background-size: cover;
+        }
+        h1 {
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            margin: 0;
+            background: rgba(0, 0, 0, 0.5);
+            border-bottom: 4px solid #ffcc00;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.8);
+            margin: 40px auto;
+            padding: 20px;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1s ease-in-out;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+        }
+        th {
+            background-color: #333;
+            color: #ffcc00;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Batsman Record</h1>
+
+<div class="container">
+    <form action="/batsman-record" method="get">
+        <label>Enter Batsman Name</label>
+        <input type="text" name="batsman" placeholder="Batsman Name" required><br><br>
+        <input type="submit" value="Get Record">
+    </form>
+
+    {% if result %}
+        {% set batsman = result|first %}
+        <h2>Overall Record for {{ batsman }}</h2>
+        <table>
+            <tr>
+                <th>Stat</th>
+                <th>Value</th>
+            </tr>
+            <tr><td>Innings</td><td>{{ result[batsman]['all']['innings'] }}</td></tr>
+            <tr><td>Runs</td><td>{{ result[batsman]['all']['runs'] }}</td></tr>
+            <tr><td>Fours</td><td>{{ result[batsman]['all']['fours'] }}</td></tr>
+            <tr><td>Sixes</td><td>{{ result[batsman]['all']['sixes'] }}</td></tr>
+            <tr><td>Average</td><td>{{ result[batsman]['all']['avg'] }}</td></tr>
+            <tr><td>Strike Rate</td><td>{{ result[batsman]['all']['strikeRate'] }}</td></tr>
+            <tr><td>Fifties</td><td>{{ result[batsman]['all']['fifties'] }}</td></tr>
+            <tr><td>Hundreds</td><td>{{ result[batsman]['all']['hundreds'] }}</td></tr>
+            <tr><td>Highest Score</td><td>{{ result[batsman]['all']['highestScore'] }}</td></tr>
+            <tr><td>Not Out</td><td>{{ result[batsman]['all']['notOut'] }}</td></tr>
+            <tr><td>Man of the Match</td><td>{{ result[batsman]['all']['mom'] }}</td></tr>
+        </table>
+
+        <h2>Record Against Teams</h2>
+        <table>
+            <tr>
+                <th>Team</th>
+                <th>Innings</th>
+                <th>Runs</th>
+                <th>Fours</th>
+                <th>Sixes</th>
+                <th>Average</th>
+                <th>Strike Rate</th>
+                <th>Fifties</th>
+                <th>Hundreds</th>
+                <th>Highest Score</th>
+                <th>Not Out</th>
+                <th>Man of the Match</th>
+            </tr>
+            {% for team, stats in result[batsman]['against'].items() %}
+                <tr>
+                    <td>{{ team }}</td>
+                    <td>{{ stats['innings'] }}</td>
+                    <td>{{ stats['runs'] }}</td>
+                    <td>{{ stats['fours'] }}</td>
+                    <td>{{ stats['sixes'] }}</td>
+                    <td>{{ stats['avg'] }}</td>
+                    <td>{{ stats['strikeRate'] }}</td>
+                    <td>{{ stats['fifties'] }}</td>
+                    <td>{{ stats['hundreds'] }}</td>
+                    <td>{{ stats['highestScore'] }}</td>
+                    <td>{{ stats['notOut'] }}</td>
+                    <td>{{ stats['mom'] }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</div>
+
+</body>
+</html>
